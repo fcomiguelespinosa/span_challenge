@@ -121,6 +121,4 @@ Standings are sorted by:
 ## Notes
 - The application is OS agnostic (works on Windows, macOS, Linux)
 - Data results extracted from https://www.worldfootball.net/
-- Since there is not a clear rule when the value goalsAgainst is zero, the code takes that result as the higher goal average
- (1,000,000), making teams with no goals agains higher in the standing table. It is important in the first and second rounds
- when there are many teams with the same points and zero goals against, for the final result it doesn't make any difference.
+- Since there is no clear rule for handling a goalsAgainst value of zero, the code assigns an artificially high goal average (1,000,000), placing teams with no goals conceded at the top of the standings. This affects rankings during the first and second rounds (when many teams have the same points and zero goals against) but it does not impact the final standings.
