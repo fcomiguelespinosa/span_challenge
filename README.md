@@ -10,7 +10,7 @@ A command-line Java application that calculates football league standing tables 
 ## Building the Project
 
 ```bash
-mvn clean package
+mvn clean package checkstyle:check
 ```
 
 This command will:
@@ -18,12 +18,12 @@ This command will:
 - Run all tests (JUnit 5)
 - Run code style checks (Checkstyle)
 - Generate code coverage reports (JaCoCo)
-- Build an executable JAR file
+- Build a 'fat' executable JAR file
 
 ## Running the Application
 
 ```bash
-java -jar target/standing-table-calculator-1.0.0.jar <input.csv> <output.csv>
+java -jar target/standing-table-calculator-jar-with-dependencies.jar <input.csv> <output.csv>
 ```
 
 ### Input CSV Format
@@ -58,6 +58,25 @@ mvn test
 mvn checkstyle:check
 ```
 
+## Code Coverage result
+
+`./target/site/jacoco/index.html`
+
+
+## Docker execution
+
+Alternative is possible to execute the code using Docker
+
+```bash
+# Build the image
+docker build -t standing_calculator .
+```
+
+```bash
+# Run with input/output files, mounting the current directory as volume in /data
+docker run -v $(pwd):/data/ standing_calculator /data/matches.csv /data/output.csv
+```
+
 ## Project Structure
 
 ```
@@ -78,6 +97,7 @@ mvn checkstyle:check
 │               └── StandingTableServiceTest.java
 ├── pom.xml
 ├── checkstyle.xml
+└── Dockerfile
 └── README.md
 ```
 
@@ -99,6 +119,8 @@ Standings are sorted by:
 3. Goals for (descending)
 
 ## Notes
-
 - The application is OS agnostic (works on Windows, macOS, Linux)
 - Data results extracted from https://www.worldfootball.net/
+- Since there is not a clear rule when the value goalsAgainst is zero, the code takes that result as the higher goal average
+ (1,000,000), making teams with no goals agains higher in the standing table. It is important in the first and second rounds
+ when there are many teams with the same points and zero goals against, for the final result it doesn't make any difference.

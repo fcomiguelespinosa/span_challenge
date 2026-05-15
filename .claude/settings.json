@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn *)",
+      "Bash(java *)"
+    ],
+    "ask": [
+      "Bash(rm -rf target/)",
+      "Bash(rm -rf build/)"
+    ],
+    "deny": [
+      "Read(./.env)"
+    ]
+  }
+}
