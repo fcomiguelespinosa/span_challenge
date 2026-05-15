@@ -18,7 +18,7 @@ public class StandingTableApplication {
      *
      * @param args command line arguments (input CSV file path, output CSV file path)
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args.length < 2) {
             System.err.println("Usage: java -jar standing-table-calculator.jar <input.csv> <output.csv>");
             System.exit(1);

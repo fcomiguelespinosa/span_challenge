@@ -24,21 +24,32 @@ public class StandingTableService {
     /**
      * Reads match results from a CSV file.
      * Expected format: HomeTeam,AwayTeam,HomeGoals,AwayGoals
+     * First row (header) is skipped.
      *
      * @param filePath path to the input CSV file
      * @return list of Match objects
      * @throws IOException if file cannot be read
      */
-    public List<Match> readMatches(String filePath) throws IOException {
+    public List<Match> readMatches(final String filePath) throws IOException {
+        final int EXPECTED_COLUMNS = 4;
+        final int HOME_TEAM_INDEX = 0;
+        final int AWAY_TEAM_INDEX = 1;
+        final int HOME_GOALS_INDEX = 2;
+        final int AWAY_GOALS_INDEX = 3;
         List<Match> matches = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
             String[] line;
+            boolean isFirstLine = true;
             while ((line = reader.readNext()) != null) {
-                if (line.length >= 4) {
-                    String homeTeam = line[0];
-                    String awayTeam = line[1];
-                    int homeGoals = Integer.parseInt(line[2]);
-                    int awayGoals = Integer.parseInt(line[3]);
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+                if (line.length >= EXPECTED_COLUMNS) {
+                    String homeTeam = line[HOME_TEAM_INDEX];
+                    String awayTeam = line[AWAY_TEAM_INDEX];
+                    int homeGoals = Integer.parseInt(line[HOME_GOALS_INDEX]);
+                    int awayGoals = Integer.parseInt(line[AWAY_GOALS_INDEX]);
                     matches.add(new Match(homeTeam, awayTeam, homeGoals, awayGoals));
                 }
             }
@@ -56,7 +67,7 @@ public class StandingTableService {
      * @param matches list of matches to process
      * @return sorted list of Standing objects
      */
-    public List<Standing> calculateStandings(List<Match> matches) {
+    public List<Standing> calculateStandings(final List<Match> matches) {
         Map<String, Standing> standings = new HashMap<>();
 
         for (Match match : matches) {
@@ -82,16 +93,18 @@ public class StandingTableService {
 
     /**
      * Writes standings to a CSV file.
-     * Output format: Position,Team,Played,Won,Drawn,Lost,GoalsFor,GoalsAgainst,GoalDifference,Points
+     * Output format: Position,Team,Played,Won,Drawn,Lost,GoalsFor,GoalsAgainst,GoalAverage,Points
      *
      * @param standings list of Standing objects to write
      * @param filePath path to the output CSV file
      * @throws IOException if file cannot be written
      */
-    public void writeStandings(List<Standing> standings, String filePath) throws IOException {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+    public void writeStandings(final List<Standing> standings, final String filePath) throws IOException {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath), CSVWriter.DEFAULT_SEPARATOR,
+                CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
+
             writer.writeNext(new String[]{"Position", "Team", "Played", "Won", "Drawn", "Lost",
-                    "GoalsFor", "GoalsAgainst", "GoalDifference", "Points"});
+                    "GoalsFor", "GoalsAgainst", "GoalAverage", "Points"});
 
             int position = 1;
             for (Standing standing : standings) {
@@ -104,7 +117,7 @@ public class StandingTableService {
                         String.valueOf(standing.getLost()),
                         String.valueOf(standing.getGoalsFor()),
                         String.valueOf(standing.getGoalsAgainst()),
-                        String.valueOf(standing.getGoalDifference()),
+                        String.format("%.2f", standing.getGoalAverage()),
                         String.valueOf(standing.getPoints())
                 });
             }

@@ -54,10 +54,10 @@ class StandingTest {
     }
 
     @Test
-    void testGoalDifference() {
+    void testGoalAverage() {
         standing.addWin(3, 1);
-        standing.addWin(2, 0);
-        assertEquals(4, standing.getGoalDifference());
+        standing.addWin(2, 1);
+        assertEquals(2.5, standing.getGoalAverage(), 0.01);
     }
 
     @Test
@@ -70,11 +70,15 @@ class StandingTest {
     }
 
     @Test
-    void testCompareByGoalDifference() {
+    void testCompareByGoalAverageNotDifference() {
         Standing team1 = new Standing("Team 1");
         Standing team2 = new Standing("Team 2");
-        team1.addWin(3, 1);
-        team2.addWin(2, 1);
+        team1.addWin(4, 2);
+        team2.addWin(8, 5);
+
+        assertEquals(2.0, team1.getGoalAverage(), 0.01);
+        assertEquals(1.6, team2.getGoalAverage(), 0.01);
+
         assertTrue(team1.compareTo(team2) < 0);
     }
 }

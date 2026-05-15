@@ -17,7 +17,7 @@ public class Match {
      * @param homeGoals goals scored by home team
      * @param awayGoals goals scored by away team
      */
-    public Match(String homeTeam, String awayTeam, int homeGoals, int awayGoals) {
+    public Match(final String homeTeam, final String awayTeam, final int homeGoals, final int awayGoals) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeGoals = homeGoals;

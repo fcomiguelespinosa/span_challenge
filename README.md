@@ -41,9 +41,9 @@ Manchester United,Everton,1,1
 The output file will contain the final standings:
 
 ```
-Position,Team,Played,Won,Drawn,Lost,GoalsFor,GoalsAgainst,GoalDifference,Points
-1,Manchester United,20,15,3,2,42,10,32,33
-2,Arsenal,20,14,2,4,51,20,31,30
+Position,Team,Played,Won,Drawn,Lost,GoalsFor,GoalsAgainst,GoalAverage,Points
+1,Manchester United,20,15,3,2,42,10,4.20,33
+2,Arsenal,20,14,2,4,51,20,2.55,30
 ```
 
 ## Running Tests
@@ -95,11 +95,10 @@ mvn checkstyle:check
 
 Standings are sorted by:
 1. Points (descending)
-2. Goal difference (descending)
+2. Goal average (descending) - calculated as goalsFor/goalsAgainst
 3. Goals for (descending)
 
 ## Notes
 
 - The application is OS agnostic (works on Windows, macOS, Linux)
-- All file paths are relative and use forward slashes (/)
-- Maintains 80% test coverage target
+- Data results extracted from https://www.worldfootball.net/

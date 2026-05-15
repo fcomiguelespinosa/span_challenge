@@ -18,7 +18,7 @@ public class Standing implements Comparable<Standing> {
      *
      * @param teamName team name
      */
-    public Standing(String teamName) {
+    public Standing(final String teamName) {
         this.teamName = teamName;
         this.played = 0;
         this.won = 0;
@@ -57,15 +57,16 @@ public class Standing implements Comparable<Standing> {
         return goalsAgainst;
     }
 
-    public int getGoalDifference() {
-        return goalsFor - goalsAgainst;
+    public double getGoalAverage() {
+        final double HIGH_AMOUNT = 1000000.0; // Avoid zero division and teams with no goals against are ranked higher
+        return goalsAgainst == 0 ? HIGH_AMOUNT : (double) goalsFor / goalsAgainst;
     }
 
     public int getPoints() {
         return points;
     }
 
-    public void addWin(int goalsFor, int goalsAgainst) {
+    public void addWin(final int goalsFor, final int goalsAgainst) {
         this.played++;
         this.won++;
         this.points += 2;
@@ -73,7 +74,7 @@ public class Standing implements Comparable<Standing> {
         this.goalsAgainst += goalsAgainst;
     }
 
-    public void addDraw(int goalsFor, int goalsAgainst) {
+    public void addDraw(final int goalsFor, final int goalsAgainst) {
         this.played++;
         this.drawn++;
         this.points += 1;
@@ -81,7 +82,7 @@ public class Standing implements Comparable<Standing> {
         this.goalsAgainst += goalsAgainst;
     }
 
-    public void addLoss(int goalsFor, int goalsAgainst) {
+    public void addLoss(final int goalsFor, final int goalsAgainst) {
         this.played++;
         this.lost++;
         this.goalsFor += goalsFor;
@@ -89,14 +90,14 @@ public class Standing implements Comparable<Standing> {
     }
 
     @Override
-    public int compareTo(Standing other) {
+    public int compareTo(final Standing other) {
         if (this.points != other.points) {
             return other.points - this.points;
         }
-        int thisGoalDiff = this.getGoalDifference();
-        int otherGoalDiff = other.getGoalDifference();
-        if (thisGoalDiff != otherGoalDiff) {
-            return otherGoalDiff - thisGoalDiff;
+        double thisGoalAvg = this.getGoalAverage();
+        double otherGoalAvg = other.getGoalAverage();
+        if (thisGoalAvg != otherGoalAvg) {
+            return Double.compare(otherGoalAvg, thisGoalAvg);
         }
         return other.goalsFor - this.goalsFor;
     }

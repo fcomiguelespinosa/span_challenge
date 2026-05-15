@@ -23,3 +23,6 @@ It must be OS agnostic
 - New features must include unit tests.
 - Maintain 80% test coverage.
 - Ensure no circular dependencies between packages.
+
+## Notes
+- Do not modify the content of.csv files
