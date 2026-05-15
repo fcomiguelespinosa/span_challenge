@@ -24,8 +24,5 @@ It must be OS agnostic
 - Maintain 80% test coverage.
 - Ensure no circular dependencies between packages.
 
-## Architecture Rules
-- **One class per responsibility**: parsing, sorting, and formatting must be in separate classes.
-
 ## Notes
 - Do not modify the content of.csv files
