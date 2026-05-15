@@ -16,7 +16,7 @@ It must be OS agnostic
 
 ## Code Conventions
 - **Naming**: Use camelCase for methods/variables; PascalCase for classes.
-- **Error Handling**: No silent error handling; use global `@ControllerAdvice.
+- **Error Handling**: No silent error handling.
 - **Documentation**: Use Javadoc.
 
 ## Quality Bar

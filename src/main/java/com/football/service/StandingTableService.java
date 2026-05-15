@@ -54,9 +54,9 @@ public class StandingTableService {
                 }
             }
         } catch (CsvValidationException e) {
-            e.printStackTrace();
+            throw new IOException("CSV validation error", e);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            throw new IOException("Invalid number format in CSV", e);
         }
         return matches;
     }
